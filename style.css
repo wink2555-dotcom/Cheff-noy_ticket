@@ -1,0 +1,1231 @@
+/* ==========================================
+   CSS RESET & VARIABLES (LIGHT MODE PREMIUM)
+   ========================================== */
+:root {
+    --bg-light: #f3f4f6; /* Soft light grey */
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-bg-hover: rgba(255, 255, 255, 0.85);
+    --border-color: rgba(15, 23, 42, 0.08);
+    --border-color-focus: rgba(37, 99, 235, 0.5);
+    
+    --primary: #2563eb; /* Rich Electric Blue */
+    --primary-hover: #1d4ed8;
+    --primary-glow: rgba(37, 99, 235, 0.12);
+    
+    --text-main: #0f172a; /* Dark slate */
+    --text-muted: #475569; /* Medium slate */
+    --text-light: #ffffff;
+    
+    --success: #059669; /* Emerald Green */
+    --success-glow: rgba(5, 150, 105, 0.15);
+    --danger: #dc2626; /* Coral Red */
+    
+    --font-thai: 'Prompt', sans-serif;
+    --font-eng: 'Inter', sans-serif;
+    
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+    --shadow-glow: 0 0 25px rgba(37, 99, 235, 0.08);
+    
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-thai);
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ==========================================
+   BACKGROUND GLOW EFFECTS
+   ========================================== */
+.bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.25;
+}
+
+.bg-glow-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--primary) 0%, rgba(37, 99, 235, 0) 70%);
+    top: -200px;
+    left: -200px;
+    animation: pulse-slow 15s infinite alternate;
+}
+
+.bg-glow-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.4) 0%, rgba(37, 99, 235, 0) 70%);
+    bottom: -150px;
+    right: -100px;
+    animation: pulse-slow 20s infinite alternate-reverse;
+}
+
+@keyframes pulse-slow {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.1) translate(40px, 20px); }
+}
+
+/* ==========================================
+   APP CONTAINER
+   ========================================== */
+.app-container {
+    width: 100%;
+    max-width: 1400px;
+    padding: 2rem 1.5rem;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================
+   GLASSMORPHISM BASE
+   ========================================== */
+.glass {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-md);
+    padding: 1.75rem;
+    height: 100%;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+    background: var(--card-bg-hover);
+    border-color: rgba(37, 99, 235, 0.2);
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(37, 99, 235, 0.03);
+}
+
+/* ==========================================
+   TYPOGRAPHY & UTILITIES
+   ========================================== */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+}
+
+p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.text-blue { color: var(--primary) !important; }
+.text-white { color: var(--text-main) !important; }
+.text-green { color: var(--success) !important; }
+.font-sm { font-size: 0.9rem !important; }
+.margin-top-md { margin-top: 1.5rem; }
+.hidden { display: none !important; }
+
+/* ==========================================
+   SCREENS SCHEDULER
+   ========================================== */
+.screen-section {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.screen-section.active {
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================
+   1. LOGIN SCREEN STYLING
+   ========================================== */
+#login-screen {
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 4rem);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 450px;
+    border-radius: var(--radius-lg);
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), #60a5fa);
+}
+
+.brand-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-wrapper {
+    background: linear-gradient(135deg, var(--primary), #60a5fa);
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+}
+
+.brand-logo {
+    width: 32px;
+    height: 32px;
+    color: #ffffff;
+}
+
+.brand-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* Login Tabs */
+.login-tabs {
+    display: flex;
+    background: rgba(15, 23, 42, 0.05);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.tab-btn i {
+    width: 16px;
+    height: 16px;
+}
+
+.tab-btn:hover {
+    color: var(--text-main);
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* Forms container */
+.login-form {
+    display: none;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.login-form.active {
+    display: flex;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-group label i {
+    width: 16px;
+    height: 16px;
+    color: var(--primary);
+}
+
+.form-group input,
+.form-group select {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    color: var(--text-main);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+    background: #ffffff;
+}
+
+.form-group select option {
+    background-color: #ffffff;
+    color: var(--text-main);
+}
+
+.error-msg {
+    color: var(--danger);
+    font-size: 0.85rem;
+    text-align: center;
+    display: none;
+}
+
+/* Buttons style */
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), #1d4ed8);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.15);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25);
+    transform: translateY(-2px);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-lg {
+    padding: 14px 28px;
+    font-size: 1.05rem;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    color: var(--text-main);
+}
+
+.btn-outline:hover {
+    background: rgba(15, 23, 42, 0.05);
+    border-color: rgba(15, 23, 42, 0.3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success), #047857);
+    color: #ffffff;
+    box-shadow: 0 4px 12px var(--success-glow);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #047857, #065f46);
+    box-shadow: 0 6px 18px var(--success-glow);
+    transform: translateY(-2px);
+}
+
+.btn-logout {
+    border-color: rgba(220, 38, 38, 0.2);
+    color: var(--danger);
+}
+
+.btn-logout:hover {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.4);
+}
+
+/* ==========================================
+   HEADER BAR (Common for Student/Supervisor)
+   ========================================== */
+.header-bar {
+    width: 100%;
+    border-radius: var(--radius-md);
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.user-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    background: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar i {
+    width: 24px;
+    height: 24px;
+    color: var(--primary);
+}
+
+.admin-avatar {
+    background: rgba(15, 23, 42, 0.05);
+    border-color: rgba(15, 23, 42, 0.15);
+}
+
+.admin-avatar i {
+    color: var(--text-main);
+}
+
+.user-profile-info h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.user-profile-info p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   LAYOUTS (Grid & Flex)
+   ========================================== */
+.main-content {
+    flex: 1;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.grid-layout-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.card-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    height: 100%;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.card-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--primary);
+}
+
+.card-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.section-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+}
+
+/* ==========================================
+   2. STUDENT PORTAL SPECIFICS
+   ========================================== */
+
+/* Menu Option Cards Selection */
+.menu-selection-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.menu-card-label {
+    display: block;
+    cursor: pointer;
+    position: relative;
+}
+
+.menu-card-label input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.menu-card-content {
+    background: rgba(15, 23, 42, 0.03);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.menu-tag {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    align-self: flex-start;
+    font-weight: 500;
+}
+
+.red-tag { background: rgba(37, 99, 235, 0.08); color: var(--primary); border: 1px solid rgba(37, 99, 235, 0.15); }
+.blue-tag { background: rgba(15, 23, 42, 0.05); color: var(--text-main); border: 1px solid rgba(15, 23, 42, 0.1); }
+.green-tag { background: rgba(5, 150, 105, 0.08); color: var(--success); border: 1px solid rgba(5, 150, 105, 0.15); }
+.white-tag { background: rgba(15, 23, 42, 0.02); color: var(--text-muted); border: 1px solid var(--border-color); }
+
+.menu-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.menu-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Radio check indicator state */
+.menu-card-label input:checked + .menu-card-content {
+    border-color: var(--primary);
+    background: rgba(37, 99, 235, 0.05);
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.05);
+}
+
+.menu-card-label input:checked + .menu-card-content .menu-title {
+    color: var(--primary);
+}
+
+/* My Ticket Render CSS */
+.tickets-scroll-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+/* Styled Scrollbars */
+.tickets-scroll-area::-webkit-scrollbar,
+.table-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.tickets-scroll-area::-webkit-scrollbar-track,
+.table-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-sm);
+}
+.tickets-scroll-area::-webkit-scrollbar-thumb,
+.table-container::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.1);
+    border-radius: var(--radius-sm);
+}
+.tickets-scroll-area::-webkit-scrollbar-thumb:hover,
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(15, 23, 42, 0.25);
+}
+
+.no-tickets-placeholder {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border: 1px dashed rgba(15, 23, 42, 0.15);
+    border-radius: var(--radius-sm);
+}
+
+/* Premium Boarding Pass Style Food Ticket Card */
+.food-ticket {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+.food-ticket::after {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: var(--bg-light);
+    border-radius: 50%;
+    z-index: 2;
+    border-right: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.food-ticket-main {
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+}
+
+.ticket-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ticket-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ticket-tag {
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--primary);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.ticket-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.ticket-menu-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.ticket-meta-row {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.ticket-meta-row strong {
+    color: var(--text-main);
+    font-family: var(--font-eng);
+}
+
+/* Action button inside ticket */
+.ticket-delete-btn {
+    background: none;
+    border: none;
+    color: rgba(220, 38, 38, 0.4);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.ticket-delete-btn:hover {
+    color: var(--danger);
+    background: rgba(220, 38, 38, 0.08);
+}
+
+/* Barcode Section of the ticket */
+.food-ticket-barcode {
+    border-top: 1px dashed rgba(15, 23, 42, 0.1);
+    padding: 1rem 1.25rem;
+    background: rgba(15, 23, 42, 0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+/* Beautiful Simulated CSS Barcode in Dark Charcoal for Light Mode */
+.barcode-visual {
+    width: 100%;
+    height: 45px;
+    background: repeating-linear-gradient(
+        90deg,
+        #1e293b,
+        #1e293b 1px,
+        transparent 1px,
+        transparent 5px,
+        #1e293b 5px,
+        #1e293b 7px,
+        transparent 7px,
+        transparent 10px,
+        #1e293b 10px,
+        #1e293b 11px,
+        transparent 11px,
+        transparent 13px,
+        #1e293b 13px,
+        #1e293b 16px,
+        transparent 16px,
+        transparent 20px
+    );
+    opacity: 0.9;
+}
+
+.barcode-text {
+    font-family: var(--font-eng);
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* ==========================================
+   3. SUPERVISOR DASHBOARD SPECIFICS
+   ========================================== */
+
+/* Overview Stat Cards Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.stat-card {
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.stat-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-sm);
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stat-icon {
+    width: 28px;
+    height: 28px;
+}
+
+.stat-card:nth-child(even) .stat-icon-wrapper {
+    background: rgba(71, 85, 105, 0.08);
+    border-color: rgba(71, 85, 105, 0.15);
+}
+
+.stat-data {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-main);
+    font-family: var(--font-eng);
+}
+
+.stat-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Charts Panel & Progress Bars */
+.menu-breakdown-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.breakdown-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.breakdown-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.breakdown-meta span {
+    color: var(--text-muted);
+}
+
+.breakdown-meta strong {
+    color: var(--text-main);
+    font-family: var(--font-eng);
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: rgba(15, 23, 42, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s ease;
+}
+
+.progress-blue {
+    background: linear-gradient(90deg, var(--primary), #60a5fa);
+}
+
+.progress-white {
+    background: linear-gradient(90deg, #94a3b8, #475569);
+}
+
+/* Classroom breakdown Grid */
+.classroom-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    height: calc(100% - 2.5rem);
+    align-content: start;
+}
+
+.class-stat-card {
+    background: rgba(15, 23, 42, 0.03);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.class-stat-card:hover {
+    border-color: rgba(37, 99, 235, 0.2);
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.class-stat-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.class-stat-count {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-main);
+    font-family: var(--font-eng);
+}
+
+/* Filters Control Panel */
+.filters-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    background: rgba(15, 23, 42, 0.02);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 150px;
+}
+
+.filter-group label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-group input,
+.filter-group select {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-glow);
+}
+
+.btn-reset {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Detailed table style */
+.table-action-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.table-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.table-title h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: #ffffff;
+}
+
+.booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.booking-table th,
+.booking-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.booking-table th {
+    background-color: rgba(15, 23, 42, 0.02);
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.booking-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.booking-table tbody tr:hover {
+    background-color: rgba(37, 99, 235, 0.02);
+}
+
+.booking-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.booking-table td strong {
+    font-family: var(--font-eng);
+    color: var(--text-main);
+}
+
+.no-data-table-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 4rem 1rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+/* ==========================================
+   NOTIFICATION TOAST STYLING
+   ========================================== */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--success); /* Success Green */
+    color: #ffffff;
+    padding: 14px 28px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    z-index: 1000;
+    transform: translateY(150%) scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.toast.active {
+    transform: translateY(0) scale(1);
+}
+
+.toast.danger {
+    background: var(--danger);
+}
+
+/* ==========================================
+   DAILY MENU MANAGER (SUPERVISOR CONFIG)
+   ========================================== */
+.menu-config-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.menu-config-date-selector {
+    background: rgba(15, 23, 42, 0.02);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem;
+}
+
+.menu-config-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+.menu-config-card-item {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.3s ease;
+}
+
+.menu-config-card-item:hover {
+    border-color: rgba(37, 99, 235, 0.2);
+}
+
+.menu-item-header {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.menu-item-header.color-a { background: rgba(37, 99, 235, 0.06); color: var(--primary); }
+.menu-item-header.color-b { background: rgba(71, 85, 105, 0.06); color: #475569; }
+.menu-item-header.color-c { background: rgba(16, 185, 129, 0.06); color: var(--success); }
+.menu-item-header.color-d { background: rgba(5, 150, 105, 0.06); color: #059669; }
+
+.menu-item-fields {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.menu-item-fields .form-group label {
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+}
+
+.menu-item-fields .form-group input {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    background: #ffffff;
+}
+
+/* ==========================================
+   MEDIA QUERIES (Responsive Web Design)
+   ========================================== */
+@media (max-width: 1024px) {
+    .grid-layout,
+    .grid-layout-2col {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .menu-config-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .menu-config-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-bar {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        align-items: center;
+        padding: 1.25rem;
+    }
+    
+    .user-profile-info {
+        flex-direction: column;
+    }
+    
+    .classroom-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .filters-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-reset {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .login-card {
+        padding: 2rem 1.5rem;
+    }
+}
