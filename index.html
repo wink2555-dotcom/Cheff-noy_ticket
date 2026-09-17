@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจองตั๋วอาหารโรงเรียน - School Meal Booking</title>
+    <!-- Google Fonts: Prompt for Thai, Inter for English/Numbers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons for premium UI look -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Glow Effects -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="app-container">
+        
+        <!-- ==================== 1. LOGIN SCREEN ==================== -->
+        <section id="login-screen" class="screen-section active">
+            <div class="login-card glass">
+                <div class="brand-header">
+                    <div class="logo-wrapper">
+                        <i data-lucide="utensils-cross" class="brand-logo"></i>
+                    </div>
+                    <h1>Smart Canteen</h1>
+                    <p>ระบบจองตั๋วอาหารกลางวันล่วงหน้า</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="login-tabs">
+                    <button class="tab-btn active" id="tab-student" onclick="switchLoginTab('student')">
+                        <i data-lucide="graduation-cap"></i> นักเรียน
+                    </button>
+                    <button class="tab-btn" id="tab-supervisor" onclick="switchLoginTab('supervisor')">
+                        <i data-lucide="shield-check"></i> ครูผู้ดูแล
+                    </button>
+                </div>
+
+                <!-- Student Login Form -->
+                <form id="student-login-form" class="login-form active" onsubmit="handleStudentLogin(event)">
+                    <div class="form-group">
+                        <label for="student-id"><i data-lucide="user"></i> รหัสนักเรียน</label>
+                        <input type="text" id="student-id" placeholder="ตัวอย่าง: STD001" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="student-classroom"><i data-lucide="door-open"></i> ห้องเรียน</label>
+                        <select id="student-classroom" required>
+                            <option value="" disabled selected>เลือกห้องเรียน...</option>
+                            <option value="ม.1/1">มัธยมศึกษาปีที่ 1/1</option>
+                            <option value="ม.1/2">มัธยมศึกษาปีที่ 1/2</option>
+                            <option value="ม.2/1">มัธยมศึกษาปีที่ 2/1</option>
+                            <option value="ม.2/2">มัธยมศึกษาปีที่ 2/2</option>
+                            <option value="ม.3/1">มัธยมศึกษาปีที่ 3/1</option>
+                            <option value="ม.3/2">มัธยมศึกษาปีที่ 3/2</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        เข้าสู่ระบบจองตั๋ว <i data-lucide="arrow-right"></i>
+                    </button>
+                </form>
+
+                <!-- Supervisor Login Form -->
+                <form id="supervisor-login-form" class="login-form" onsubmit="handleSupervisorLogin(event)">
+                    <div class="form-group">
+                        <label for="supervisor-username"><i data-lucide="shield"></i> บัญชีครูผู้ดูแล</label>
+                        <input type="text" id="supervisor-username" placeholder="Username" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="supervisor-password"><i data-lucide="key-round"></i> รหัสผ่าน</label>
+                        <input type="password" id="supervisor-password" placeholder="••••••••" required>
+                    </div>
+                    <div id="login-error-msg" class="error-msg"></div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        เข้าสู่ระบบผู้ดูแล <i data-lucide="arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+
+        <!-- ==================== 2. STUDENT PORTAL SCREEN ==================== -->
+        <section id="student-screen" class="screen-section">
+            <header class="header-bar glass">
+                <div class="user-profile-info">
+                    <div class="avatar">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <div>
+                        <h2 id="display-student-id">STDXXXX</h2>
+                        <p id="display-student-class">ห้องเรียน: ม.X/X</p>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-logout" onclick="logout()">
+                    <i data-lucide="log-out"></i> ออกจากระบบ
+                </button>
+            </header>
+
+            <main class="main-content grid-layout">
+                <!-- Left: Booking Form -->
+                <div class="card-column">
+                    <div class="glass-card fade-in">
+                        <div class="card-header">
+                            <i data-lucide="calendar-plus" class="card-icon"></i>
+                            <h3>จองตั๋วอาหารล่วงหน้า</h3>
+                        </div>
+                        <form id="booking-form" onsubmit="handleMealBooking(event)">
+                            <div class="form-group">
+                                <label for="booking-date"><i data-lucide="calendar"></i> เลือกวันที่ต้องการทาน</label>
+                                <input type="date" id="booking-date" required>
+                            </div>
+                            
+                            <label class="section-label"><i data-lucide="menu"></i> เลือกเมนูอาหารประจำวัน</label>
+                            <div class="menu-selection-grid" id="student-menu-options-container">
+                                <!-- Dynamic menus will be injected by JavaScript -->
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block btn-lg margin-top-md">
+                                ยืนยันการจองตั๋วอาหาร <i data-lucide="check-circle-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right: Active Ticket Display -->
+                <div class="card-column">
+                    <div class="glass-card fade-in">
+                        <div class="card-header">
+                            <i data-lucide="ticket" class="card-icon"></i>
+                            <h3>ตั๋วอาหารของฉัน</h3>
+                        </div>
+                        <div id="student-tickets-container" class="tickets-scroll-area">
+                            <!-- JS will inject ticket cards here -->
+                            <div class="no-tickets-placeholder">
+                                <i data-lucide="info" size="32"></i>
+                                <p>ยังไม่มีรายการจองตั๋วข้าวของคุณในระบบ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+
+        <!-- ==================== 3. SUPERVISOR PORTAL SCREEN ==================== -->
+        <section id="supervisor-screen" class="screen-section">
+            <header class="header-bar glass">
+                <div class="user-profile-info">
+                    <div class="avatar admin-avatar">
+                        <i data-lucide="shield"></i>
+                    </div>
+                    <div>
+                        <h2>แผงควบคุมครูผู้ดูแล (Supervisor Dashboard)</h2>
+                        <p>จัดการข้อมูลและภาพรวมการจองตั๋วอาหารกลางวัน</p>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-logout" onclick="logout()">
+                    <i data-lucide="log-out"></i> ออกจากระบบ
+                </button>
+            </header>
+
+            <main class="main-content flex-layout">
+                <!-- Row 1: Overview Summary Cards -->
+                <div class="stats-grid">
+                    <!-- Total Bookings -->
+                    <div class="stat-card glass fade-in">
+                        <div class="stat-icon-wrapper">
+                            <i data-lucide="clipboard-list" class="stat-icon text-blue"></i>
+                        </div>
+                        <div class="stat-data">
+                            <span class="stat-label">ยอดจองตั๋วทั้งหมด</span>
+                            <span id="stat-total-bookings" class="stat-value">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Total Today -->
+                    <div class="stat-card glass fade-in">
+                        <div class="stat-icon-wrapper">
+                            <i data-lucide="calendar-check-2" class="stat-icon text-white"></i>
+                        </div>
+                        <div class="stat-data">
+                            <span class="stat-label">ยอดทานวันนี้</span>
+                            <span id="stat-today-bookings" class="stat-value">0</span>
+                            <span id="stat-today-date" class="stat-sub">16/07/2026</span>
+                        </div>
+                    </div>
+
+                    <!-- Popular Menu -->
+                    <div class="stat-card glass fade-in">
+                        <div class="stat-icon-wrapper">
+                            <i data-lucide="sparkles" class="stat-icon text-blue"></i>
+                        </div>
+                        <div class="stat-data">
+                            <span class="stat-label">เมนูยอดนิยม</span>
+                            <span id="stat-popular-menu" class="stat-value font-sm">-</span>
+                            <span id="stat-popular-count" class="stat-sub">0 รายการ</span>
+                        </div>
+                    </div>
+
+                    <!-- Popular Class -->
+                    <div class="stat-card glass fade-in">
+                        <div class="stat-icon-wrapper">
+                            <i data-lucide="users" class="stat-icon text-white"></i>
+                        </div>
+                        <div class="stat-data">
+                            <span class="stat-label">ห้องเรียนที่จองสูงสุด</span>
+                            <span id="stat-popular-class" class="stat-value">-</span>
+                            <span id="stat-popular-class-count" class="stat-sub">0 รายการ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: Charts and Detailed Breakdown of Menu Types -->
+                <div class="grid-layout-2col margin-top-md">
+                    <!-- Menu Booking Breakdown Bar -->
+                    <div class="glass-card fade-in">
+                        <div class="card-header">
+                            <i data-lucide="pie-chart" class="card-icon"></i>
+                            <h3>สัดส่วนยอดจองแต่ละเมนู</h3>
+                        </div>
+                        <div class="menu-breakdown-container">
+                            <div class="breakdown-item">
+                                <div class="breakdown-meta">
+                                    <span>เมนู A: ข้าวผัดอเมริกัน</span>
+                                    <strong id="breakdown-count-a">0 กล่อง</strong>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div id="progress-a" class="progress-bar-fill progress-blue" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-meta">
+                                    <span>เมนู B: บะหมี่เกี๊ยวหมูแดง</span>
+                                    <strong id="breakdown-count-b">0 กล่อง</strong>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div id="progress-b" class="progress-bar-fill progress-white" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-meta">
+                                    <span>เมนู C: แกงเขียวหวานไก่โรตี</span>
+                                    <strong id="breakdown-count-c">0 กล่อง</strong>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div id="progress-c" class="progress-bar-fill progress-blue" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-meta">
+                                    <span>เมนู D: แกงแกงกะหรี่เต้าหู้ (มังสวิรัติ)</span>
+                                    <strong id="breakdown-count-d">0 กล่อง</strong>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div id="progress-d" class="progress-bar-fill progress-white" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Classroom Bookings Grid -->
+                    <div class="glass-card fade-in">
+                        <div class="card-header">
+                            <i data-lucide="bar-chart-3" class="card-icon"></i>
+                            <h3>ยอดจองแยกตามห้องเรียน</h3>
+                        </div>
+                        <div id="classroom-grid-stats" class="classroom-grid">
+                            <!-- Dynamic stats cards for classes -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2.5: Manage Daily Menus -->
+                <div class="glass-card margin-top-md fade-in">
+                    <div class="card-header">
+                        <i data-lucide="calendar-range" class="card-icon"></i>
+                        <h3>จัดการเมนูอาหารรายวัน</h3>
+                    </div>
+                    <div class="menu-config-panel">
+                        <div class="menu-config-date-selector">
+                            <div class="form-group" style="flex-direction: row; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                <label for="menu-config-date" style="margin-bottom: 0; font-size: 0.95rem; font-weight: 600;">
+                                    <i data-lucide="calendar"></i> เลือกวันที่ต้องการตั้งค่าเมนู:
+                                </label>
+                                <input type="date" id="menu-config-date" style="max-width: 220px;" onchange="loadMenuConfigForDate(this.value)">
+                                <button type="button" class="btn btn-outline btn-reset" onclick="resetMenuToDefaultToday()" style="height: 42px;">
+                                    <i data-lucide="rotate-ccw"></i> รีเซ็ตเป็นเมนูเริ่มต้น
+                                </button>
+                            </div>
+                        </div>
+
+                        <form id="menu-config-form" onsubmit="saveMenuConfig(event)" class="margin-top-md">
+                            <div class="menu-config-grid">
+                                <!-- Menu A -->
+                                <div class="menu-config-card-item">
+                                    <div class="menu-item-header color-a"><i data-lucide="sparkles" size="14"></i> เมนู A (เมนูแนะนำ)</div>
+                                    <div class="menu-item-fields">
+                                        <div class="form-group">
+                                            <label>ชื่ออาหาร</label>
+                                            <input type="text" id="config-menu-name-a" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>คำอธิบายเมนู</label>
+                                            <input type="text" id="config-menu-desc-a" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Menu B -->
+                                <div class="menu-config-card-item">
+                                    <div class="menu-item-header color-b"><i data-lucide="chef-hat" size="14"></i> เมนู B (เส้นนุ่ม)</div>
+                                    <div class="menu-item-fields">
+                                        <div class="form-group">
+                                            <label>ชื่ออาหาร</label>
+                                            <input type="text" id="config-menu-name-b" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>คำอธิบายเมนู</label>
+                                            <input type="text" id="config-menu-desc-b" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Menu C -->
+                                <div class="menu-config-card-item">
+                                    <div class="menu-item-header color-c"><i data-lucide="soup" size="14"></i> เมนู C (แกงเข้มข้น)</div>
+                                    <div class="menu-item-fields">
+                                        <div class="form-group">
+                                            <label>ชื่ออาหาร</label>
+                                            <input type="text" id="config-menu-name-c" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>คำอธิบายเมนู</label>
+                                            <input type="text" id="config-menu-desc-c" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Menu D -->
+                                <div class="menu-config-card-item">
+                                    <div class="menu-item-header color-d"><i data-lucide="leaf" size="14"></i> เมนู D (มังสวิรัติ)</div>
+                                    <div class="menu-item-fields">
+                                        <div class="form-group">
+                                            <label>ชื่ออาหาร</label>
+                                            <input type="text" id="config-menu-name-d" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>คำอธิบายเมนู</label>
+                                            <input type="text" id="config-menu-desc-d" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg margin-top-md" style="width: 100%; max-width: 250px;">
+                                <i data-lucide="save"></i> บันทึกรายการเมนูอาหาร
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Row 3: Filters & Booking Table List -->
+                <div class="glass-card margin-top-md fade-in">
+                    <div class="table-action-header">
+                        <div class="table-title">
+                            <i data-lucide="list" class="card-icon"></i>
+                            <h3>รายการจองตั๋วข้าวทั้งหมด</h3>
+                        </div>
+                        <button class="btn btn-success" onclick="exportToCSV()">
+                            <i data-lucide="download"></i> ส่งออกไฟล์ CSV (Excel)
+                        </button>
+                    </div>
+
+                    <!-- Filters Control Panel -->
+                    <div class="filters-panel">
+                        <div class="filter-group">
+                            <label><i data-lucide="search" size="14"></i> รหัสนักเรียน</label>
+                            <input type="text" id="filter-student-id" placeholder="ค้นหารหัส..." oninput="applyFilters()">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label><i data-lucide="door-open" size="14"></i> ห้องเรียน</label>
+                            <select id="filter-classroom" onchange="applyFilters()">
+                                <option value="all">ทั้งหมด ทุกห้อง</option>
+                                <option value="ม.1/1">ม.1/1</option>
+                                <option value="ม.1/2">ม.1/2</option>
+                                <option value="ม.2/1">ม.2/1</option>
+                                <option value="ม.2/2">ม.2/2</option>
+                                <option value="ม.3/1">ม.3/1</option>
+                                <option value="ม.3/2">ม.3/2</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label><i data-lucide="menu" size="14"></i> เมนูอาหาร</label>
+                            <select id="filter-menu" onchange="applyFilters()">
+                                <option value="all">ทั้งหมด ทุกเมนู</option>
+                                <option value="A">เมนู A: ข้าวผัดอเมริกัน</option>
+                                <option value="B">เมนู B: บะหมี่เกี๊ยวหมูแดง</option>
+                                <option value="C">เมนู C: แกงเขียวหวานไก่โรตี</option>
+                                <option value="D">เมนู D: แกงกะหรี่เต้าหู้ทอด</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label><i data-lucide="calendar" size="14"></i> วันที่จองอาหาร</label>
+                            <input type="date" id="filter-date" onchange="applyFilters()">
+                        </div>
+
+                        <button class="btn btn-outline btn-reset" onclick="resetFilters()">
+                            <i data-lucide="rotate-ccw"></i> รีเซ็ตตัวกรอง
+                        </button>
+                    </div>
+
+                    <!-- Table listing bookings -->
+                    <div class="table-container">
+                        <table class="booking-table">
+                            <thead>
+                                <tr>
+                                    <th>รหัสนักเรียน</th>
+                                    <th>ห้องเรียน</th>
+                                    <th>เมนูอาหารที่เลือก</th>
+                                    <th>วันที่ทาน</th>
+                                    <th>วันที่ทำรายการ</th>
+                                    <th>การจัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookings-table-body">
+                                <!-- Data rows injected by JS -->
+                            </tbody>
+                        </table>
+                        <div id="no-data-msg" class="no-data-table-placeholder hidden">
+                            <i data-lucide="search" size="32"></i>
+                            <p>ไม่พบข้อมูลการจองตามเงื่อนไขที่กรอง</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <span id="toast-message">บันทึกข้อมูลเรียบร้อย!</span>
+    </div>
+
+    <!-- Main Logic script -->
+    <script src="app.js"></script>
+</body>
+</html>
