@@ -1,0 +1,18 @@
+name: CI Upload Generic Artifact
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+jobs:
+  upload-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: List repository files (debug)
+        run: ls -R
+      - name: Upload existing placeholder as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: placeholder-artifact
+          path: placeholder.txt
